@@ -16,6 +16,7 @@ app = FastAPI(title="PDF Question Answering API")
 origins = [
     "http://localhost:3000",  # Default React dev server port
     "http://localhost:5173",  # Default Vite dev server port
+    "https://pdf-query-frontend.vercel.app"
 ]
 app.add_middleware(
     CORSMiddleware,
