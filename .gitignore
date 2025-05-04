@@ -1,0 +1,29 @@
+# Environment variables
+.env
+
+# Virtual Environment
+venv/
+.venv/ # Common alternative name
+env/
+.env/ # Another alternative
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE specific files (examples)
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS specific files (examples)
+.DS_Store
+Thumbs.db
+
+# Build artifacts / distribution
+/dist/
+/build/
+*.egg-info/
+*.log

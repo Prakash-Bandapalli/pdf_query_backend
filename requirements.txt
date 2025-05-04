@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+PyMuPDF
+langchain
+langchain-google-genai
+cassio 
+uuid
+langchain-community
+python-multipart
