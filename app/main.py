@@ -1,4 +1,3 @@
-# app/main.py
 from fastapi import FastAPI, File, UploadFile, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 import io
@@ -6,7 +5,7 @@ import io
 # Import components and service functions
 from . import services
 from . import models
-from .config import LLM, EMBEDDING_MODEL, TABLE_NAME # Although not used directly here, ensures init runs
+from .config import LLM, EMBEDDING_MODEL, TABLE_NAME
 
 # Initialize FastAPI app
 app = FastAPI(title="PDF Question Answering API")
@@ -68,11 +67,9 @@ async def upload_pdf(file: UploadFile = File(..., description="PDF file to uploa
          raise HTTPException(status_code=500, detail=str(re))
     except Exception as e:
         print(f"Unexpected error during upload: {e}")
-        # Log the full error for debugging
-        # logger.exception("Unexpected error during PDF upload") # If using logging
+       
         raise HTTPException(status_code=500, detail=f"An unexpected error occurred during file processing: {e}")
     finally:
-        # Ensure file handle is closed (FastAPI usually handles this, but good practice)
         await file.close()
 
 

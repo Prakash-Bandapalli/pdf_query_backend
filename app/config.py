@@ -1,4 +1,3 @@
-# app/config.py
 import os
 import cassio
 from dotenv import load_dotenv
@@ -10,7 +9,7 @@ load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 ASTRA_DB_APPLICATION_TOKEN = os.getenv("ASTRA_DB_APPLICATION_TOKEN")
 ASTRA_DB_ID = os.getenv("ASTRA_DB_ID")
-ASTRA_DB_TABLE_NAME = os.getenv("ASTRA_DB_TABLE_NAME", "pdf_qa_documents_gemini") # Default if not in .env
+ASTRA_DB_TABLE_NAME = os.getenv("ASTRA_DB_TABLE_NAME", "pdf_qa_documents_gemini") 
 
 def initialize_components():
     """Initializes and returns LLM, Embeddings model, and Vector Store Table Name."""
@@ -31,7 +30,7 @@ def initialize_components():
 
         # Initialize Google Embeddings
         embedding_model = GoogleGenerativeAIEmbeddings(
-            model="models/embedding-001", # Or your preferred Google embedding model
+            model="models/embedding-001", 
             google_api_key=GOOGLE_API_KEY
         )
 
@@ -46,6 +45,5 @@ def initialize_components():
 try:
     LLM, EMBEDDING_MODEL, TABLE_NAME = initialize_components()
 except Exception as e:
-    # Handle initialization failure gracefully, maybe exit or log critical error
     print(f"CRITICAL: Failed to initialize application components. Exiting. Error: {e}")
-    exit(1) # Or raise an exception that the main app can catch
+    exit(1)

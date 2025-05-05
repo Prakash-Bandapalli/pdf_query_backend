@@ -1,4 +1,3 @@
-# app/services.py
 import fitz # PyMuPDF
 import uuid
 import io
@@ -44,7 +43,6 @@ def get_vector_store() -> Cassandra:
     return Cassandra(
         embedding=EMBEDDING_MODEL,
         table_name=TABLE_NAME,
-        # session and keyspace are handled by cassio.init()
     )
 
 def index_pdf_text(pdf_bytes: bytes, filename: str) -> str:
@@ -81,7 +79,7 @@ def index_pdf_text(pdf_bytes: bytes, filename: str) -> str:
     # Add texts with metadata to Astra DB
     try:
         print(f"Adding {len(documents_with_metadata)} chunks to Astra DB for doc_id {doc_id}...")
-        inserted_ids = vector_store.add_documents(documents_with_metadata, batch_size=20) # Adjust batch_size if needed
+        inserted_ids = vector_store.add_documents(documents_with_metadata, batch_size=20)
         print(f"Successfully inserted {len(inserted_ids)} vectors into table '{TABLE_NAME}'.")
         return doc_id
     except Exception as e:
@@ -103,17 +101,12 @@ def answer_question(doc_id: str, question: str) -> str:
     retriever = vector_store.as_retriever(
         search_kwargs={
             'k': 3, # Number of relevant chunks to retrieve
-            # This filter syntax depends on the LangChain Cassandra integration.
-            # Verify the exact filter format if this doesn't work.
-            # Common patterns involve `filter` or directly in search_kwargs.
-            # For CassIO/AstraDB, metadata filtering is often direct key-value:
-             "filter": {"doc_id": doc_id} # Adjust this if syntax differs in your version
+             "filter": {"doc_id": doc_id}
         }
     )
 
     # --- Check if any relevant chunks were found ---
     # Perform a preliminary search to see if chunks exist for this doc_id
-    # Note: This adds an extra query but prevents sending empty context to LLM
     try:
         relevant_docs = retriever.get_relevant_documents(question)
         if not relevant_docs:
@@ -137,7 +130,7 @@ def answer_question(doc_id: str, question: str) -> str:
 
     try:
         print("Sending query to LLM...")
-        result = qa_chain({"query": question}) # Use invoke for newer LangChain versions: qa_chain.invoke(question)
+        result = qa_chain({"query": question})
         print("Received answer from LLM.")
         return result.get("result", "Sorry, I could not generate an answer.").strip()
     except Exception as e:
