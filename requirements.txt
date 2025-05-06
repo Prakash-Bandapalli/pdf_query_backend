@@ -8,3 +8,4 @@ cassio
 uuid
 langchain-community
 python-multipart
+httpx
