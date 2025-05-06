@@ -8,7 +8,7 @@ from fastapi import FastAPI
 # --- Keep-Alive Configuration ---
 RENDER_EXTERNAL_URL = os.getenv('RENDER_EXTERNAL_URL')
 SELF_KEEP_ALIVE_TARGET_URL = f"{RENDER_EXTERNAL_URL}/" if RENDER_EXTERNAL_URL else "http://localhost:8000/" # Assuming root path for ping
-KEEP_ALIVE_INTERVAL_SECONDS = 1 * 60  # Ping every 14 minutes
+KEEP_ALIVE_INTERVAL_SECONDS = 14 * 60  # Ping every 14 minutes
 
 keep_alive_task_ref: asyncio.Task | None = None # Holds the task reference
 
@@ -19,7 +19,7 @@ async def _self_keep_alive_ping_task_loop():
             try:
                 print(f"[Keep-Alive-Self] Sending self-ping to {SELF_KEEP_ALIVE_TARGET_URL}...")
                 response = await client.get(SELF_KEEP_ALIVE_TARGET_URL)
-                response.raise_for_status()  # Raise an exception for 4xx/5xx status codes
+                response.raise_for_status()  
                 print(f"[Keep-Alive-Self] Self-ping to {SELF_KEEP_ALIVE_TARGET_URL} successful: Status {response.status_code}")
             except httpx.RequestError as exc:
                 print(f"[Keep-Alive-Self] Self-ping to {SELF_KEEP_ALIVE_TARGET_URL} failed (RequestError): {exc}")
